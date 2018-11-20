@@ -1,0 +1,352 @@
+﻿@{
+
+
+}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8">
+        <title>Desafio</title>
+        <link href="css/site.css" rel="stylesheet">
+        <script src="https://www.pagador.com.br/post/scripts/silentorderpost-1.0.min.js" type="text/javascript"></script>
+        <script type="text/javascript" language="javascript">
+            function sendCardData() {
+                var options = {
+                    accessToken: document.getElementById("accessToken").value,
+                    onSuccess: function (e) {
+                        var paymentToken = e.PaymentToken;
+                        var brand = e.Brand;
+                        var foreignCard = e.ForeignCard;
+                        var binQueryReturnCode = e.BinQueryReturnCode;
+                        var binQueryReturnMessage = e.BinQueryReturnMessage;
+                    },
+                    onError: function (e) {
+                        var errorCode = eCode;
+                        var errorMessage = e.Text;
+                    },
+                    onInvalid: function (e) {
+                        for (var i = 0; i < e.length; i++) {
+                            var field = e[i].Field;
+                            var message = e[i].Message;
+                        }
+                    },
+                    environment: "production",
+                    language: "PT",
+                    enableBinQuery: true
+                };
+                bpSop_silentOrderPost(options);
+            }
+
+        </script>
+        <script>function ide(documento) {
+			    var e = document.getElementById('oId');
+			    e.style.display='block';
+			    e.value="";
+			    if(documento.value=='rg'){
+				    e.placeholder="Digite seu RG";
+				    e.onkeypress=function(){formatar('##.###.###-#', e);return SomenteNumero(event);};
+				    e.maxLength='12';
+			    }else if(documento.value=='cpf'){
+				    e.placeholder='Digite seu CPF';
+				    e.onkeypress=function(){formatar('###.###.###-##', e);return SomenteNumero(event);};
+				    e.maxLength='14';
+			    }else{
+				    e.placeholder='Digite seu CNPJ';
+				    e.onkeypress=function(){formatar('##.###.###/####-##', e);return SomenteNumero(event);};
+				    e.maxLength='18';
+			    }
+		    }
+		    function formatar(mascara, documento){
+		      var i = documento.value.length;
+		      var saida = mascara.substring(0,1);
+		      var texto = mascara.substring(i)
+		      if (texto.substring(0,1) != saida){
+			    documento.value += texto.substring(0,1);
+		      }
+		    }
+		    function SomenteNumero(e){
+			    var tecla=(window.event)?event.keyCode:e.which;
+			    if((tecla>47 && tecla<58)) return true;
+			    else{
+				    if (tecla==8 || tecla==0) return true;
+				    else  return false;
+			    }
+		    }
+		    function a1(documento){
+			    var e = document.getElementById('Blabla');
+			    if(documento.value=="sim"){
+				    e.style.display='block';
+			    }else{
+				    e.style.display='none';
+			    }
+		    }</script>
+    
+    </head>
+    <body>
+        <div class="container">
+            @{
+                if (!IsPost)
+                {
+                    <form id="contact" action="" method="post">
+                        <h3>Dados do Comprador</h3>
+                        <fieldset>
+                            <input placeholder="Nome" type="text" id="oNome" name="tNome" maxlength="255" required autofocus>
+                        </fieldset>
+                        <fieldset>
+                            <input type="radio" name="tTipo" value="rg" onclick="ide(this)"> RG
+                        </fieldset>
+                        <fieldset>
+                            <input type="radio" name="tTipo" value="cpf" onclick="ide(this)"> CPF
+                        </fieldset>
+                        <fieldset>
+                            <input type="radio" name="tTipo" value="cnpj" onclick="ide(this)"> CNPJ
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" id="oId" name="tId">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite seu endereço de email" type="email" name="tEmail" maxlength="255">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite sua data de nascimento AAAA-MM-DD" type="text" name="tNascimento"
+                                   maxlength="10" onkeypress="formatar('####-##-##', this); return SomenteNumero(event)">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite seu CEP" type="text" name="tCep" maxlength="8"
+                                   onkeypress="formatar('#####-##', this); return SomenteNumero(event)">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite o nome do seu país" type="text" name="tPais" maxlength="35">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite o UF" type="text" name="tEstado" maxlength="2">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite o nome da cidade" type="text" name="tCidade" maxlength="50">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite o nome do Bairro" type="text" name="tBairro" maxlength="50">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite o nome da sua rua" type="text" name="tRua" maxlength="255">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite o Nº o numero da rua" type="text" name="tRuaNum" maxlength="15">
+                        </fieldset>
+                        <fieldset>
+                            <input placeholder="Digite o complemento" type="text" name="tComplemento" maxlength="50">
+                        </fieldset>
+                        <fieldset>
+                            <p>Deseja que o endereço de entrega seja outro?</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="radio" name="tOp" value="sim" onclick="a1(this)"> Sim
+                        </fieldset>
+                        <fieldset>
+                            <input type="radio" name="tOp" value="nao" onclick="a1(this)"> Não
+                        </fieldset>
+                        <div id="Blabla">
+                            <fieldset>
+                                <input placeholder="Digite o nome do país de entrega" type="text" name="ePais" maxlength="35">
+                            </fieldset>
+                            <fieldset>
+                                <input placeholder="Digite o UF de entrega" type="text" name="eEstado" maxlength="2">
+                            </fieldset>
+                            <fieldset>
+                                <input placeholder="Digite o nome da cidade de entrega" type="text" name="eCidade" maxlength="50">
+                            </fieldset>
+                            <fieldset>
+                                <input placeholder="Digite o nome do Bairro de entrega" type="text" name="eBairro" maxlength="50">
+                            </fieldset>
+                            <fieldset>
+                                <input placeholder="Digite o nome da rua de entraga" type="text" name="eRua" maxlength="255">
+                            </fieldset>
+                            <fieldset>
+                                <input placeholder="Digite o Nº o numero da rua de entrega" type="text" name="eRuaNum" maxlength="15">
+                            </fieldset>
+                            <fieldset>
+                                <input placeholder="Digite o complemento" type="text" name="eComplemento" maxlength="50">
+                            </fieldset>
+                        </div>
+                        <h3>Dados do Pagamento</h3>
+                        <fieldset>
+                            <p>Nome da provedora de Meio de Pagamento</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tProvedora" value="Simulado" readonly>
+                        </fieldset>
+                        <fieldset>
+                            <p>Forma de Pagamento:</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tFPagamento" value="CreditCard" readonly>
+                        </fieldset>
+                        <fieldset>
+                            <p>Valor do pedido:</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tValorPedido" value="1000" readonly>
+                        </fieldset>
+                        <fieldset>
+                            <p>Taxa de serviço:</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tTaxa" value="0" readonly>
+                        </fieldset>
+                        <fieldset>
+                            <p>Moeda:</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tMoeda" value="BRL" readonly>
+                        </fieldset>
+                        <fieldset>
+                            <p>País de pagamento:</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tPPagamento" value="BRA" readonly>
+                        </fieldset>
+                        <fieldset>
+                            <p>Numero de parcelas:</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tParcelas" value="1" readonly>
+                        </fieldset>
+                        <fieldset>
+                            <p>Tipo de parcelamento:</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tParcelamento" value="ByMerchant" readonly>
+                        </fieldset>
+                        <fieldset>
+                            <p>Captura automática?</p>
+                        </fieldset>
+                        <fieldset>
+                            <input type="radio" name="tCap" value="sim"> Sim
+                        </fieldset>
+                        <fieldset>
+                            <input type="radio" name="tCap" value="nao"> Não
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tNCredito" value="" maxlength="16" placeholder="Nº do cartão de crédito"
+                                   onkeypress="return SomenteNumero(event)" class="bp-sop-cardnumber" required>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tNCartao" value="" maxlength="25" class="bp-sop-cardholdername"
+                                   placeholder="Nome do portador impresso no cartão" required>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tDCartao" value="" maxlength="7" placeholder="Data de validade impresso no cartão"
+                                   onkeypress="formatar('##/####', this); return SomenteNumero(event)" class="bp-sop-cardexpirationdate" required>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tCodigoSeguranca" value="" maxlength="4" class="bp-sop-cardcvv"
+                                   placeholder="Código de segurança impresso no verso do cartão" onkeypress="return SomenteNumero(event)" required>
+                        </fieldset>
+                        <fieldset>
+                            <input type="text" name="tBandeira" value="" maxlength="10"
+                                   placeholder="Bandeira do cartão" required>
+                        </fieldset>
+                        <fieldset>
+                            <button class="sendCardData();" name="submit" type="submit" id="contact-submit">Confirmar</button>
+                        </fieldset>
+                    </form>
+                }
+                else
+                {
+                    var nomeComprador = Request["tNome"];
+                    var tipoId = Request["tTipo"];
+                    var identificacao = Request["tId"];
+                    var email = Request["tEmail"];
+                    var dataNascimento = Request["tNascimento"];
+                    var cep = Request["tCep"];
+                    var pais = Request["tPais"];
+                    var estado = Request["tEstado"];
+                    var cidade = Request["tCidade"];
+                    var bairro = Request["tBairro"];
+                    var rua = Request["tRua"];
+                    var numRua = Request["tRuaNum"];
+                    var complemento = Request["tComplemento"];
+                    if (Request["tOp"]=="sim") {
+                        var eCep = Request["tCep"];
+                        var ePais = Request["tPais"];
+                        var eEstado = Request["tEstado"];
+                        var eCidade = Request["tCidade"];
+                        var eBairro = Request["tBairro"];
+                        var eRua = Request["tRua"];
+                        var eNumRua = Request["tRuaNum"];
+                        var eComplemento = Request["tComplemento"];
+                    }
+                    else {
+                        var eCep = Request["eCep"];
+                        var ePais = Request["ePais"];
+                        var eEstado = Request["eEstado"];
+                        var eCidade = Request["eCidade"];
+                        var eBairro = Request["eBairro"];
+                        var eRua = Request["eRua"];
+                        var eNumRua = Request["eRuaNum"];
+                        var eComplemento = Request["eComplemento"];
+                    }
+                    var provedora = Request["tProvedora"];
+                    var fPagamento = Request["tFPagamento"];
+                    int valorPedido = Convert.ToInt32(Request["tValorPedido"]);
+                    int taxa = Convert.ToInt32(Request["tTaxa"]);
+                    var moeda = Request["tMoeda"];
+                    var paisPagamento = Request["tPPagamento"];
+                    int numeroParcelas = Convert.ToInt32(Request["tParcelas"]);
+                    var parcelamento = Request["tParcelamento"];
+                    if (Request["tCap"] == "sim")
+                    {
+                        bool captura = true;
+                    }
+                    else
+                    {
+                        bool captura = false;
+                    }
+                    //dados do cartão de credito
+                    var numCartao = Request["tNCredito"];
+                    var nomeCartao = Request["tNCartao"];
+                    var dataVencimentoCartao = Request["tDCartao"];
+                    var codigoSeguranca = Request["tCodigoSeguranca"];
+                    var bandeira = Request["tBandeira"];
+
+
+                    // primeiro temos que verificar se o cartão é valido
+                    WebRequest request = WebRequest.Create("https://apisandbox.braspag.com.br/v2/verifycard");
+                    // indica o método da solicitação
+                    request.Method = "GET";
+                    request.Headers.Add("d3ef8adb-7729-4488-99dc-3a4b90e2cb1c","KFEKSCHHIVMBVETXUFOFYFENKATTGGTTXXXVBDYL");
+                    //aqui eu acredito que esteja meio errado, mas eu nao consegui passar as informações de outra forma
+                    string postData =  provedora+ numCartao+nomeCartao+ dataVencimentoCartao+ codigoSeguranca+ bandeira+ "CreditCard" ;
+                    //string postData = "This is a test that posts this string to a Web server.";
+                    System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+                    byte[] byteArray = encoding.GetBytes(postData);
+                    // Seta a propriedade  
+                    request.ContentType = "application/json";
+                    request.ContentLength = byteArray.Length;
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+                    //obtendo a resposta
+                    WebResponse response = request.GetResponse();
+                    //Console.WriteLine(((HttpWebResponse)response).StatusDescription); 
+                    dataStream = response.GetResponseStream();
+                    StreamReader reader = new StreamReader(dataStream);
+                    string responseFromServer = reader.ReadToEnd();
+                    //Console.WriteLine(responseFromServer); 
+                    reader.Close();
+                    dataStream.Close();
+                    response.Close();
+                    //precisaria criar um if pra verificar o status do cartão de acordo com a resposta do sevidor e se ele for 1 proseguir com a operação. Mas não consegui fazer
+                    //depois que a tranzação for aceita e estiver tudo certo com o cartão, podemos seguir para a próxima etapa
+                    //enviar um post para https://transactionsandbox.pagador.com.br/post/api/public/v1/accesstoken?merchantid={d3ef8adb-7729-4488-99dc-3a4b90e2cb1c}
+                    //o servidor retornaria um token de acesso (AccessToken), que eu ainda não entendi bem o uso dele.
+                    //por fim enviar um post para https://apisandbox.braspag.com.br/v2/sales/ com os dados da transação
+                    //ps.: também faltou fazer um Numero de identificação do Pedido (a ser incrementado de acordo com o número do último pedido por exemplo) e a tela de consulta.
+                    /*Foi um desafio e tanto fazer uma aplicação web, visto que não tenho muito conhecimento de aplicações web. Obrigado pela oportunidade e principalmente pela experiência. 
+                     Sem dúvida alguma foi um aprendizado e tanto. Estudarei mais nas minhas férias sobre aplicações web com C# e quem sabe no futuro tenho uma nova oportunidade.*/
+                }
+           }
+
+        </div>
+    </body>
+</html>
